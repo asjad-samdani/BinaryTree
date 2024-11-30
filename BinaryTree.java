@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class BinaryTree {
   static class Node {
     int data;
@@ -18,13 +21,11 @@ public class BinaryTree {
       idx++;
 
       if (nodes[idx] == -1) {
-        System.out.println("Returning null for index: " + idx);
 
         return null;
       }
 
       Node newNode = new Node(nodes[idx]);
-      System.out.println("Creating node: " + newNode.data);
 
       newNode.left = buildTree(nodes);
       newNode.right = buildTree(nodes);
@@ -32,6 +33,7 @@ public class BinaryTree {
       return newNode;
     }
 
+    // preorder Traversals
     public static void preOrder(Node root) {
       if (root == null) {
         return;
@@ -40,14 +42,77 @@ public class BinaryTree {
       preOrder(root.left);
       preOrder(root.right);
     }
+
+    // Inorder Traversals
+    public static void inOrder(Node root) {
+      if (root == null) {
+        return;
+
+      }
+      inOrder(root.left);
+      System.out.print(root.data + " ");
+      inOrder(root.right);
+    }
+
+    // Postrder Traversals
+    public static void postOrder(Node root) {
+      if (root == null) {
+        return;
+
+      }
+      postOrder(root.left);
+      postOrder(root.right);
+      System.out.print(root.data + " ");
+    }
+
+    // Level order Traversals O(n)
+    public static void leverlOrder(Node root) {
+      if (root == null) {
+        return;
+
+      }
+      Queue<Node> q = new LinkedList<>();
+      q.add(root);
+      q.add(null);
+      while (!q.isEmpty()) {
+        Node currentNode = q.remove();
+        if (currentNode == null) {
+          System.out.println();
+          if (q.isEmpty()) {
+            break;
+
+          } else {
+            q.add(null);
+          }
+
+        } else {
+          System.out.print(currentNode.data + " ");
+          if (currentNode.left != null) {
+            q.add(currentNode.left);
+
+          }
+          if (currentNode.right != null) {
+            q.add(currentNode.right);
+
+          }
+        }
+
+      }
+
+    }
+
   }
 
   public static void main(String[] args) {
 
-    int nodes[] = { 1, 24, -1, -1, 5, -1, -1, 3, -1, 6, -1, -1 };
-
+    int nodes[] = { 1, 2, 4, -1, -1, 5, -1, -1, 3, -1, 6, -1, -1 };
     Node root = Binary.buildTree(nodes);
-
     Binary.preOrder(root);
+    System.out.println();
+    Binary.inOrder(root);
+    System.out.println();
+    Binary.postOrder(root);
+    System.out.println();
+    Binary.leverlOrder(root);
   }
 }
